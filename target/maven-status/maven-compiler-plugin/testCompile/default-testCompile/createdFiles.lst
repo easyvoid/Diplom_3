@@ -1,0 +1,10 @@
+site\nomoreparties\stellarburgers\ChromeBrowser\RegisterTest.class
+site\nomoreparties\stellarburgers\ChromeBrowser\LoginTest.class
+site\nomoreparties\stellarburgers\YandexBrowser\RegisterTest.class
+site\nomoreparties\stellarburgers\YandexBrowser\TransitToSectionTest.class
+site\nomoreparties\stellarburgers\ChromeBrowser\TransitToSectionTest.class
+site\nomoreparties\stellarburgers\ChromeBrowser\ExitButtonTest.class
+site\nomoreparties\stellarburgers\YandexBrowser\ExitButtonTest.class
+site\nomoreparties\stellarburgers\YandexBrowser\AccountProfileTest.class
+site\nomoreparties\stellarburgers\YandexBrowser\LoginTest.class
+site\nomoreparties\stellarburgers\ChromeBrowser\AccountProfileTest.class

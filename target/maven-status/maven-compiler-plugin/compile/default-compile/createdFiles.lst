@@ -1,0 +1,7 @@
+site\nomoreparties\stellarburgers\LoginPage.class
+site\nomoreparties\stellarburgers\RegisterPage.class
+site\nomoreparties\stellarburgers\ForgotPasswordPage.class
+api\UserClient.class
+site\nomoreparties\stellarburgers\AccountProfilePage.class
+api\User.class
+site\nomoreparties\stellarburgers\HomePage.class
