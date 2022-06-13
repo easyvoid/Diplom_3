@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
 import site.nomoreparties.stellarburgers.*;
 
-import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
 import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
@@ -38,6 +37,9 @@ public class LoginTest {
         loginPage.fullLogin("ulanovda@gmail.com", "password");
 
         webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+
+        String actualEmail = checkAccountProfile();
+        assertEquals("ulanovda@gmail.com",actualEmail);
     }
 
     @Test
@@ -51,6 +53,9 @@ public class LoginTest {
         loginPage.fullLogin("ulanovda@gmail.com", "password");
 
         webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+
+        String actualEmail = checkAccountProfile();
+        assertEquals("ulanovda@gmail.com",actualEmail);
     }
 
     @Test
@@ -66,6 +71,9 @@ public class LoginTest {
         loginPage.fullLogin("ulanovda@gmail.com", "password");
 
         webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+
+        String actualEmail = checkAccountProfile();
+        assertEquals("ulanovda@gmail.com",actualEmail);
     }
 
     @Test
@@ -78,6 +86,9 @@ public class LoginTest {
         loginPage.fullLogin("ulanovda@gmail.com", "password");
 
         webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+
+        String actualEmail = checkAccountProfile();
+        assertEquals("ulanovda@gmail.com",actualEmail);
     }
 
     @After
@@ -85,5 +96,12 @@ public class LoginTest {
         driver.quit();
         Thread.sleep(800);
         UserClient.deleteUser(user);
+    }
+
+    @Step("Возвращает Email из Личного Кабинета")
+    public String checkAccountProfile() {
+        HomePage homePage = page(HomePage.class);
+        AccountProfilePage accountProfilePage = homePage.waitAndPushAccountButton();
+        return accountProfilePage.checkFieldValue(accountProfilePage.loginEmailField);
     }
 }

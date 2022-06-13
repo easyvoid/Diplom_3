@@ -16,7 +16,7 @@ public class AccountProfilePage {
     //Методи проверки значения поля
     public String checkFieldValue(SelenideElement element) {
         loginEmailField.scrollTo();
-        loginEmailField.shouldBe(visible, enabled);
+        loginEmailField.shouldBe(visible);
         return element.getValue();
     }
 
@@ -26,7 +26,7 @@ public class AccountProfilePage {
         //Метод скрола и ожидания появления элемента (кнопки)
         public void waitAndVisibleButton(SelenideElement element){
             element.scrollTo();
-            element.shouldBe(visible, Duration.ofSeconds(2));
+            element.shouldBe(visible, enabled);
         }
 
         //Метод нажатия на кнопку

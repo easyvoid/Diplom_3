@@ -2,6 +2,7 @@ package site.nomoreparties.stellarburgers.YandexBrowser;
 
 import api.User;
 import api.UserClient;
+import io.qameta.allure.Step;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class RegisterTest {
     }
 
     @Test
-    public void registerPositiveTest() {
+    public void registerPositiveTest() throws InterruptedException {
         HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
 
@@ -44,7 +45,7 @@ public class RegisterTest {
 
         webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
 
-        UserClient.deleteUser(user);
+        deleteUserApi();
     }
 
     @Test
@@ -59,4 +60,9 @@ public class RegisterTest {
         registerPage.passwordErrorVisible();
     }
 
+    @Step("Удаление пользователя через API")
+    public void deleteUserApi() throws InterruptedException {
+        Thread.sleep(800);
+        UserClient.deleteUser(user);
+    }
 }
