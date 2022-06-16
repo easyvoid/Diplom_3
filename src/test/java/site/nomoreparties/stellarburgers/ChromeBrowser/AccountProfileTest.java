@@ -1,60 +1,45 @@
 package site.nomoreparties.stellarburgers.ChromeBrowser;
 
-import api.User;
-import api.UserClient;
-import io.qameta.allure.Step;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import site.nomoreparties.stellarburgers.BaseTest;
 import site.nomoreparties.stellarburgers.HomePage;
-import site.nomoreparties.stellarburgers.LoginPage;
-import site.nomoreparties.stellarburgers.RegisterPage;
 
-import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
 
 
-public class AccountProfileTest {
-
-    User user = new User("ulanovda@gmail.com", "password", "Денис");
+public class AccountProfileTest extends BaseTest {
 
     @Before
     public void setUp(){
-        UserClient.registerUser(user);
+        client.registerUser(user);
     }
 
     @Test
     public void pushAccountButtonNotAuthTest() {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+        HomePage homePage = open(homePageURL, HomePage.class);
         homePage.waitAndPushAccountButton();
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
+        webdriver().shouldHave(url(loginPageURL));
     }
 
     @Test
     public void pushAccountButtonAuthTest() {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+        HomePage homePage = open(homePageURL, HomePage.class);
         homePage.waitAndPushLoginButton();
-        loginUser("ulanovda@gmail.com", "password");
+        loginUser(user.getEmail(), user.getPassword());
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+        webdriver().shouldHave(url(homePageURL));
 
         homePage.waitAndPushAccountButton();
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/account/profile"));
+        webdriver().shouldHave(url(profilePageURL));
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        UserClient.deleteUser(user);
+        client.deleteUser(user);
         Thread.sleep(800);
     }
-
-    @Step("Логин пользователя")
-    public void loginUser(String email, String password) {
-        LoginPage loginPage = page(LoginPage.class);
-        loginPage.fullLogin(email, password);
-        loginPage.loginButton.should(disappear);
-    }
-
 }

@@ -1,51 +1,51 @@
 package site.nomoreparties.stellarburgers.ChromeBrowser;
 
 import api.User;
-import api.UserClient;
-import io.qameta.allure.Step;
+import org.junit.After;
 import org.junit.Test;
-import site.nomoreparties.stellarburgers.AccountProfilePage;
-import site.nomoreparties.stellarburgers.HomePage;
-import site.nomoreparties.stellarburgers.LoginPage;
-import site.nomoreparties.stellarburgers.RegisterPage;
+import site.nomoreparties.stellarburgers.*;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
 
 
-public class RegisterTest {
-
-    User user = new User("ulanovda@gmail.com", "password", "Денис");
+public class RegisterTest extends BaseTest {
 
     @Test
-    public void registerPositiveTest() throws InterruptedException {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+    public void registerPositiveTest() {
+        HomePage homePage = open(homePageURL, HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
 
         RegisterPage registerPage = loginPage.waitAndPushRegisterLink();
 
-        registerPage.fullRegister("Денис", "ulanovda@gmail.com", "password");
+        registerPage.fullRegister(user.getName(), user.getEmail(), user.getPassword());
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
-
-        deleteUserApi();
+        webdriver().shouldHave(url(loginPageURL));
     }
 
     @Test
     public void registerShortPasswordTest() {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+//        User userWithShortPassword = new User(user.getEmail(), gen.randomShortPassword(), user.getName());
+//        не знаю какая реализация лучше, которая строкой выше или строкой ниже?
+        User userWithShortPassword = new User().setPassword(gen.randomShortPassword()).setEmail(user.getEmail()).setName(user.getName());
+        HomePage homePage = open(homePageURL, HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
 
         RegisterPage registerPage = loginPage.waitAndPushRegisterLink();
 
-        registerPage.fullRegister("Денис", "ulanovda@gmail.com", "paswo");
+        registerPage.fullRegister(userWithShortPassword.getName(), userWithShortPassword.getEmail(), userWithShortPassword.getPassword());
 
         registerPage.passwordErrorVisible();
+
+        user = userWithShortPassword;
     }
 
-    @Step("Удаление пользователя через API")
-    public void deleteUserApi() throws InterruptedException {
+    @After
+    public void tearDown() throws InterruptedException {
+        String body = client.loginUser(user).and().extract().body().path("accessToken");
         Thread.sleep(800);
-        UserClient.deleteUser(user);
+        if (body != null) {
+            client.deleteUser(user);
+        }
     }
 }

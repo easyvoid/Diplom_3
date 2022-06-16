@@ -1,12 +1,11 @@
 package site.nomoreparties.stellarburgers.YandexBrowser;
 
 import api.User;
-import api.UserClient;
-import io.qameta.allure.Step;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
+import site.nomoreparties.stellarburgers.BaseTest;
 import site.nomoreparties.stellarburgers.HomePage;
 import site.nomoreparties.stellarburgers.LoginPage;
 import site.nomoreparties.stellarburgers.RegisterPage;
@@ -17,10 +16,8 @@ import static com.codeborne.selenide.WebDriverConditions.url;
 import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 
 
-public class RegisterTest {
+public class RegisterTest extends BaseTest {
     ChromeDriver driver;
-
-    User user = new User("ulanovda@gmail.com", "password", "Денис");
 
     @Before
     public void setUp(){
@@ -29,40 +26,40 @@ public class RegisterTest {
         setWebDriver(driver);
     }
 
-    @After
-    public void tearDown(){
-        driver.quit();
-    }
-
     @Test
-    public void registerPositiveTest() throws InterruptedException {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+    public void registerPositiveTest() {
+        HomePage homePage = open(homePageURL, HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
 
         RegisterPage registerPage = loginPage.waitAndPushRegisterLink();
 
-        registerPage.fullRegister("Денис", "ulanovda@gmail.com", "password");
+        registerPage.fullRegister(user.getName(), user.getEmail(), user.getPassword());
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
-
-        deleteUserApi();
+        webdriver().shouldHave(url(loginPageURL));
     }
 
     @Test
     public void registerShortPasswordTest() {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+        User userWithShortPassword = new User(user.getEmail(), gen.randomShortPassword(), user.getName());
+        HomePage homePage = open(homePageURL, HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
 
         RegisterPage registerPage = loginPage.waitAndPushRegisterLink();
 
-        registerPage.fullRegister("Денис", "ulanovda@gmail.com", "paswo");
+        registerPage.fullRegister(userWithShortPassword.getName(), userWithShortPassword.getEmail(), userWithShortPassword.getPassword());
 
         registerPage.passwordErrorVisible();
+
+        user = userWithShortPassword;
     }
 
-    @Step("Удаление пользователя через API")
-    public void deleteUserApi() throws InterruptedException {
+    @After
+    public void tearDown() throws InterruptedException {
+        String body = client.loginUser(user).and().extract().body().path("accessToken");
         Thread.sleep(800);
-        UserClient.deleteUser(user);
+        if (body != null) {
+            client.deleteUser(user);
+        }
+        driver.quit();
     }
 }

@@ -1,8 +1,5 @@
 package site.nomoreparties.stellarburgers.YandexBrowser;
 
-import api.User;
-import api.UserClient;
-import io.qameta.allure.Step;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,10 +11,8 @@ import static com.codeborne.selenide.WebDriverConditions.url;
 import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 import static org.junit.Assert.assertEquals;
 
-public class LoginTest {
+public class LoginTest extends BaseTest {
     ChromeDriver driver;
-
-    User user = new User("ulanovda@gmail.com", "password", "Денис");
 
     @Before
     public void setUp(){
@@ -25,83 +20,76 @@ public class LoginTest {
         driver = new ChromeDriver();
         setWebDriver(driver);
 
-        UserClient.registerUser(user);
+        client.registerUser(user);
     }
 
     @Test
     public void loginButtonTest() {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+        HomePage homePage = open(homePageURL, HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
-        loginPage.fullLogin("ulanovda@gmail.com", "password");
+        webdriver().shouldHave(url(loginPageURL));
+        loginPage.fullLogin(user.getEmail(), user.getPassword());
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+        webdriver().shouldHave(url(homePageURL));
 
         String actualEmail = checkAccountProfile();
-        assertEquals("ulanovda@gmail.com",actualEmail);
+        assertEquals(user.getEmail(),actualEmail);
     }
 
     @Test
     public void loginWithAccountButtonTest() {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+        HomePage homePage = open(homePageURL, HomePage.class);
         homePage.waitAndPushAccountButton();
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
+        webdriver().shouldHave(url(loginPageURL));
         LoginPage loginPage = page(LoginPage.class);
 
-        loginPage.fullLogin("ulanovda@gmail.com", "password");
+        loginPage.fullLogin(user.getEmail(), user.getPassword());
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+        webdriver().shouldHave(url(homePageURL));
 
         String actualEmail = checkAccountProfile();
-        assertEquals("ulanovda@gmail.com",actualEmail);
+        assertEquals(user.getEmail(),actualEmail);
     }
 
     @Test
     public void loginFromRegisterPageTest() {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+        HomePage homePage = open(homePageURL, HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
+        webdriver().shouldHave(url(loginPageURL));
         RegisterPage registerPage = loginPage.waitAndPushRegisterLink();
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/register"));
+        webdriver().shouldHave(url(registerPageURL));
         registerPage.waitAndPushLoginButton();
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
+        webdriver().shouldHave(url(loginPageURL));
 
-        loginPage.fullLogin("ulanovda@gmail.com", "password");
+        loginPage.fullLogin(user.getEmail(), user.getPassword());
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+        webdriver().shouldHave(url(homePageURL));
 
         String actualEmail = checkAccountProfile();
-        assertEquals("ulanovda@gmail.com",actualEmail);
+        assertEquals(user.getEmail(),actualEmail);
     }
 
     @Test
     public void loginFromForgotPasswordPageTest() {
-        HomePage homePage = open("https://stellarburgers.nomoreparties.site/", HomePage.class);
+        HomePage homePage = open(homePageURL, HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
         ForgotPasswordPage forgotPasswordPage = loginPage.waitAndPushForgotPasswordLink();
         forgotPasswordPage.waitAndPushLoginButton();
 
-        loginPage.fullLogin("ulanovda@gmail.com", "password");
+        loginPage.fullLogin(user.getEmail(), user.getPassword());
 
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/"));
+        webdriver().shouldHave(url(homePageURL));
 
         String actualEmail = checkAccountProfile();
-        assertEquals("ulanovda@gmail.com",actualEmail);
+        assertEquals(user.getEmail(),actualEmail);
     }
 
     @After
     public void tearDown() throws InterruptedException {
         driver.quit();
         Thread.sleep(800);
-        UserClient.deleteUser(user);
-    }
-
-    @Step("Возвращает Email из Личного Кабинета")
-    public String checkAccountProfile() {
-        HomePage homePage = page(HomePage.class);
-        AccountProfilePage accountProfilePage = homePage.waitAndPushAccountButton();
-        return accountProfilePage.checkFieldValue(accountProfilePage.loginEmailField);
+        client.deleteUser(user);
     }
 }

@@ -2,14 +2,12 @@ package site.nomoreparties.stellarburgers;
 
 import com.codeborne.selenide.SelenideElement;
 
-import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
-public class LoginPage {
+public class LoginPage extends GeneralMethods{
 
     //Поле ввода Email
     public SelenideElement emailField = $x("//label[text()='Email']/following-sibling::input");
@@ -41,24 +39,22 @@ public class LoginPage {
     }
 
     //Ссылка Зарегистрироваться
-    public static SelenideElement registerLink = $(byAttribute("href", "/register"));
+    public SelenideElement registerLink = $(byAttribute("href", "/register"));
 
     //Клик по ссылке Зарегистрироваться
     public RegisterPage waitAndPushRegisterLink() {
-        registerLink.scrollTo();
-        registerLink.shouldBe(visible, enabled);
-        registerLink.click();
+        waitAndVisibleButton(registerLink);
+        pushButton(registerLink);
         return page(RegisterPage.class);
     }
 
     //Кнопка восстановить пароль
-    public static SelenideElement forgotPasswordLink = $(byAttribute("href", "/forgot-password"));
+    public SelenideElement forgotPasswordLink = $(byAttribute("href", "/forgot-password"));
 
     //Клик по ссылке восстановить пароль
     public ForgotPasswordPage waitAndPushForgotPasswordLink() {
-        forgotPasswordLink.scrollTo();
-        forgotPasswordLink.shouldBe(visible, enabled);
-        forgotPasswordLink.click();
+        waitAndVisibleButton(forgotPasswordLink);
+        pushButton(forgotPasswordLink);
         return page(ForgotPasswordPage.class);
     }
 
