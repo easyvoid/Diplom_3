@@ -1,7 +1,5 @@
 package site.nomoreparties.stellarburgers.ChromeBrowser;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import site.nomoreparties.stellarburgers.*;
 
@@ -9,13 +7,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
 import static org.junit.Assert.assertEquals;
 
-
-public class LoginTest extends BaseTest {
-
-    @Before
-    public void setUp(){
-        client.registerUser(user);
-    }
+public class LoginTest extends ChromeBaseTest {
 
     @Test
     public void loginButtonTest() {
@@ -27,7 +19,7 @@ public class LoginTest extends BaseTest {
 
         webdriver().shouldHave(url(homePageURL));
 
-        String actualEmail = checkAccountProfile();
+        String actualEmail = homePage.checkAccountProfile();
         assertEquals(user.getEmail(),actualEmail);
     }
 
@@ -43,7 +35,7 @@ public class LoginTest extends BaseTest {
 
         webdriver().shouldHave(url(homePageURL));
 
-        String actualEmail = checkAccountProfile();
+        String actualEmail = homePage.checkAccountProfile();
         assertEquals(user.getEmail(),actualEmail);
     }
 
@@ -61,7 +53,7 @@ public class LoginTest extends BaseTest {
 
         webdriver().shouldHave(url(homePageURL));
 
-        String actualEmail = checkAccountProfile();
+        String actualEmail = homePage.checkAccountProfile();
         assertEquals(user.getEmail(),actualEmail);
     }
 
@@ -76,13 +68,7 @@ public class LoginTest extends BaseTest {
 
         webdriver().shouldHave(url(homePageURL));
 
-        String actualEmail = checkAccountProfile();
+        String actualEmail = homePage.checkAccountProfile();
         assertEquals(user.getEmail(),actualEmail);
-    }
-
-    @After
-    public void tearDown() throws InterruptedException {
-        Thread.sleep(800);
-        client.deleteUser(user);
     }
 }

@@ -9,9 +9,7 @@ import static com.codeborne.selenide.Selenide.page;
 public class ForgotPasswordPage extends GeneralMethods{
 
     //Кнопка Войти
-    public SelenideElement loginButton = $(byAttribute("href", "/login"));
-
-    //Метод скрола и ожидания появления элемента (кнопки)
+    private SelenideElement loginButton = $(byAttribute("href", "/login"));
 
     //Метод ожидания видимости кнопки и нажатия на неё для Логина
     public LoginPage waitAndPushLoginButton(){

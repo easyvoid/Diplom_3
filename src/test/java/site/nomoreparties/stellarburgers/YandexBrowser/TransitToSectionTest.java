@@ -4,15 +4,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
-import site.nomoreparties.stellarburgers.BaseTest;
 import site.nomoreparties.stellarburgers.HomePage;
+import site.nomoreparties.stellarburgers.YandexBaseTest;
 
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 
 
-public class TransitToSectionTest extends BaseTest {
+public class TransitToSectionTest extends YandexBaseTest {
     ChromeDriver driver;
 
     @Before
@@ -25,35 +25,32 @@ public class TransitToSectionTest extends BaseTest {
     }
 
     @Test
-    public void pushBunsButtonTest() throws InterruptedException {
+    public void pushBunsButtonTest() {
         HomePage homePage = page(HomePage.class);
         homePage.waitAndPushSaucesButton();
-        Thread.sleep(500);
+        homePage.currentSaucesExistAndVisible();
         homePage.waitAndPushBunsButton();
-        Thread.sleep(500);
 
         homePage.bunsButtonDoesNotExist();
-        homePage.currentBunsExist();
+        homePage.currentBunsExistAndVisible();
     }
 
     @Test
-    public void pushSaucesButtonTest() throws InterruptedException {
+    public void pushSaucesButtonTest() {
         HomePage homePage = page(HomePage.class);
         homePage.waitAndPushSaucesButton();
-        Thread.sleep(500);
 
         homePage.saucesButtonDoesNotExist();
-        homePage.currentSaucesExist();
+        homePage.currentSaucesExistAndVisible();
     }
 
     @Test
-    public void pushFillingsButtonTest() throws InterruptedException {
+    public void pushFillingsButtonTest() {
         HomePage homePage = page(HomePage.class);
         homePage.waitAndPushFillingsButton();
-        Thread.sleep(500);
 
         homePage.fillingsButtonDoesNotExist();
-        homePage.currentFillingsExist();
+        homePage.currentFillingsExistAndVisible();
     }
 
     @After

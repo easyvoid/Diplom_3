@@ -1,6 +1,7 @@
 package site.nomoreparties.stellarburgers;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
@@ -10,23 +11,28 @@ import static com.codeborne.selenide.Selenide.*;
 public class LoginPage extends GeneralMethods{
 
     //Поле ввода Email
-    public SelenideElement emailField = $x("//label[text()='Email']/following-sibling::input");
+    private SelenideElement emailField = $x("//label[text()='Email']/following-sibling::input");
 
-    //Метод ввода Email в поле
-    public void setEmailField(String email) {
-        emailField.setValue(email);
-    }
+        //Метод ввода Email в поле
+        public void setEmailField(String email) {
+            emailField.setValue(email);
+        }
 
     //Поле ввода Пароль
-    public SelenideElement passwordField = $(byName("Пароль"));
+    private SelenideElement passwordField = $(byName("Пароль"));
 
-    //Метод ввода Пароля в поле
-    public void setPasswordField(String password) {
-        passwordField.setValue(password);
-    }
+        //Метод ввода Пароля в поле
+        public void setPasswordField(String password) {
+            passwordField.setValue(password);
+        }
 
     //Кнопка Войти
-    public SelenideElement loginButton = $x("//button[text()='Войти']");
+    private SelenideElement loginButton = $x("//button[text()='Войти']");
+
+        //Метод проверки отсутствия кнопки логина
+        public void loginButtonShouldDisappear(){
+            buttonShouldDisappear(loginButton);
+        }
 
     //Полный метод логина
     public void fullLogin(String email, String password) {
@@ -39,7 +45,7 @@ public class LoginPage extends GeneralMethods{
     }
 
     //Ссылка Зарегистрироваться
-    public SelenideElement registerLink = $(byAttribute("href", "/register"));
+    private SelenideElement registerLink = $(byAttribute("href", "/register"));
 
     //Клик по ссылке Зарегистрироваться
     public RegisterPage waitAndPushRegisterLink() {
@@ -49,7 +55,7 @@ public class LoginPage extends GeneralMethods{
     }
 
     //Кнопка восстановить пароль
-    public SelenideElement forgotPasswordLink = $(byAttribute("href", "/forgot-password"));
+    private SelenideElement forgotPasswordLink = $(byAttribute("href", "/forgot-password"));
 
     //Клик по ссылке восстановить пароль
     public ForgotPasswordPage waitAndPushForgotPasswordLink() {
@@ -58,5 +64,12 @@ public class LoginPage extends GeneralMethods{
         return page(ForgotPasswordPage.class);
     }
 
-
+    @Step("Логин пользователя")
+    public void loginUser(String email, String password) {
+        LoginPage loginPage = page(LoginPage.class);
+        loginPage.fullLogin(email, password);
+        loginPage.loginButtonShouldDisappear();
+        HomePage homePage = page(HomePage.class);
+        homePage.loginButtonShouldDisappear();
+    }
 }

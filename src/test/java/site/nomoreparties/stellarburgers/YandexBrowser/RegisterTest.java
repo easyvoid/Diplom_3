@@ -5,10 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.chrome.ChromeDriver;
-import site.nomoreparties.stellarburgers.BaseTest;
-import site.nomoreparties.stellarburgers.HomePage;
-import site.nomoreparties.stellarburgers.LoginPage;
-import site.nomoreparties.stellarburgers.RegisterPage;
+import site.nomoreparties.stellarburgers.*;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.webdriver;
@@ -16,7 +13,7 @@ import static com.codeborne.selenide.WebDriverConditions.url;
 import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 
 
-public class RegisterTest extends BaseTest {
+public class RegisterTest extends YandexBaseTest {
     ChromeDriver driver;
 
     @Before

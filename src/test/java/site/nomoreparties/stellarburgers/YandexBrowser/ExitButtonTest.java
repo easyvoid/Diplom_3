@@ -1,45 +1,23 @@
 package site.nomoreparties.stellarburgers.YandexBrowser;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.chrome.ChromeDriver;
 import site.nomoreparties.stellarburgers.*;
 
-import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
-import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 
-public class ExitButtonTest extends BaseTest {
-    ChromeDriver driver;
 
-    @Before
-    public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "C:\\yandexdriver.exe");
-        driver = new ChromeDriver();
-        setWebDriver(driver);
-
-        client.registerUser(user);
-
-        HomePage homePage = open(homePageURL, HomePage.class);
-        homePage.waitAndPushLoginButton();
-        loginUser(user.getEmail(), user.getPassword());
-    }
+public class ExitButtonTest extends YandexBaseTest {
 
     @Test
     public void exitButtonTest() {
-        HomePage homePage = page(HomePage.class);
+        HomePage homePage = open(homePageURL, HomePage.class);
+        LoginPage loginPage = page(LoginPage.class);
+        homePage.waitAndPushLoginButton();
+        loginPage.loginUser(user.getEmail(), user.getPassword());
         AccountProfilePage accountProfilePage = homePage.waitAndPushAccountButton();
-        homePage.loginButton.should(disappear);
+        homePage.loginButtonShouldDisappear();
         accountProfilePage.waitAndPushExitButton();
         webdriver().shouldHave(url(loginPageURL));
-    }
-
-    @After
-    public void tearDown() throws InterruptedException {
-        driver.quit();
-        client.deleteUser(user);
-        Thread.sleep(800);
     }
 }

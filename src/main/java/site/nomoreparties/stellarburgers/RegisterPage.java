@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Selenide.*;
 public class RegisterPage extends GeneralMethods{
 
         //Поле ввода Имя
-        public SelenideElement nameField = $x("//label[text()='Имя']/following-sibling::input");
+        private SelenideElement nameField = $x("//label[text()='Имя']/following-sibling::input");
 
         //Метод ввода имени в поле Имя
         public void setNameField(String name){
@@ -18,7 +18,7 @@ public class RegisterPage extends GeneralMethods{
         }
 
         //Поле ввода Email
-        public SelenideElement emailField = $x("//label[text()='Email']/following-sibling::input");
+        private SelenideElement emailField = $x("//label[text()='Email']/following-sibling::input");
 
         //Метод ввода имени в поле Email
         public void setEmailField(String email){
@@ -27,7 +27,7 @@ public class RegisterPage extends GeneralMethods{
         }
 
         //Поле ввода Пароль
-        public SelenideElement passwordField = $(byName("Пароль"));
+        private SelenideElement passwordField = $(byName("Пароль"));
 
         //Метод ввода имени в поле Пароль
         public void setPasswordField(String password){
@@ -36,7 +36,7 @@ public class RegisterPage extends GeneralMethods{
         }
 
         //Кнопка зарегистрироваться
-        public SelenideElement registerButton = $x("//button[text()='Зарегистрироваться']");
+        private SelenideElement registerButton = $x("//button[text()='Зарегистрироваться']");
 
         //Метод ввода имени, почты и пароля для регистрации
         public void fullRegister(String name, String email, String password){
@@ -51,7 +51,7 @@ public class RegisterPage extends GeneralMethods{
         }
 
         //Ошибка Некорректный пароль
-        public SelenideElement incorrectPasswordError = $x("//p[text()='Некорректный пароль']");
+        private SelenideElement incorrectPasswordError = $x("//p[text()='Некорректный пароль']");
 
         //Метод проверки отображения ошибки о пароле
         public void passwordErrorVisible(){
@@ -61,7 +61,7 @@ public class RegisterPage extends GeneralMethods{
         }
 
         //Кнопка Войти
-        public SelenideElement loginButton = $(byAttribute("href", "/login"));
+        private SelenideElement loginButton = $(byAttribute("href", "/login"));
 
             //Метод ожидания видимости кнопки и нажатия на неё для Логина
             public void waitAndPushLoginButton(){

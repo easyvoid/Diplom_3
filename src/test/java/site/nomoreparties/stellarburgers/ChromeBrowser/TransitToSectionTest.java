@@ -1,14 +1,13 @@
 package site.nomoreparties.stellarburgers.ChromeBrowser;
 
-import com.codeborne.selenide.Selenide;
 import org.junit.Before;
 import org.junit.Test;
-import site.nomoreparties.stellarburgers.BaseTest;
+import site.nomoreparties.stellarburgers.ChromeBaseTest;
 import site.nomoreparties.stellarburgers.HomePage;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class TransitToSectionTest extends BaseTest {
+public class TransitToSectionTest extends ChromeBaseTest {
 
     @Before
     public void setUp() {
@@ -16,34 +15,31 @@ public class TransitToSectionTest extends BaseTest {
     }
 
     @Test
-    public void pushBunsButtonTest() throws InterruptedException {
+    public void pushBunsButtonTest() {
         HomePage homePage = page(HomePage.class);
         homePage.waitAndPushSaucesButton();
-        Thread.sleep(500);
+        homePage.currentSaucesExistAndVisible();
         homePage.waitAndPushBunsButton();
-        Thread.sleep(500);
 
         homePage.bunsButtonDoesNotExist();
-        homePage.currentBunsExist();
+        homePage.currentBunsExistAndVisible();
     }
 
     @Test
-    public void pushSaucesButtonTest() throws InterruptedException {
+    public void pushSaucesButtonTest() {
         HomePage homePage = page(HomePage.class);
         homePage.waitAndPushSaucesButton();
-        Thread.sleep(500);
 
         homePage.saucesButtonDoesNotExist();
-        homePage.currentSaucesExist();
+        homePage.currentSaucesExistAndVisible();
     }
 
     @Test
-    public void pushFillingsButtonTest() throws InterruptedException {
+    public void pushFillingsButtonTest() {
         HomePage homePage = page(HomePage.class);
         homePage.waitAndPushFillingsButton();
-        Thread.sleep(500);
 
         homePage.fillingsButtonDoesNotExist();
-        homePage.currentFillingsExist();
+        homePage.currentFillingsExistAndVisible();
     }
 }

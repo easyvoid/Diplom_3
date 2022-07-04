@@ -1,6 +1,7 @@
 package site.nomoreparties.stellarburgers;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byAttribute;
@@ -9,7 +10,12 @@ import static com.codeborne.selenide.Selenide.*;
 public class HomePage extends GeneralMethods{
 
     //Кнопка Войти в аккаунт
-    public SelenideElement loginButton = $x("//button[text()='Войти в аккаунт']");
+    private SelenideElement loginButton = $x("//button[text()='Войти в аккаунт']");
+
+        //Метод проверки отсутствия кнопки логина
+        public void loginButtonShouldDisappear(){
+            buttonShouldDisappear(loginButton);
+        }
 
         //Метод ожидания видимости кнопки и нажатия на неё для Логина
         public LoginPage waitAndPushLoginButton(){
@@ -19,7 +25,7 @@ public class HomePage extends GeneralMethods{
         }
 
     //Кнопка Личный Кабинет
-    public SelenideElement accountButton = $(byAttribute("href", "/account"));
+    private SelenideElement accountButton = $(byAttribute("href", "/account"));
 
         //Метод ожидания видимости кнопки и нажатия на неё для перехода в Личный кабинет
         public AccountProfilePage waitAndPushAccountButton(){
@@ -29,9 +35,9 @@ public class HomePage extends GeneralMethods{
         }
 
     //Кнопка Булки
-    public SelenideElement bunsButton = $x("//div[contains(@class,'tab_tab__1SPyG  pt-4 pr-10 pb-4 pl-10 noselect')]/span[text()='Булки']");
+    private SelenideElement bunsButton = $x("//div[contains(@class,'tab_tab__1SPyG  pt-4 pr-10 pb-4 pl-10 noselect')]/span[text()='Булки']");
         //Изменения класса в div после нажатия на кнопку Булки
-        public SelenideElement currentBuns = $x("//div[contains(@class,'_current_')]/span[text()='Булки']");
+        private SelenideElement currentBuns = $x("//div[contains(@class,'_current_')]/span[text()='Булки']");
 
         //Метод ожидания видимости кнопки Булки и нажатия на неё
         public void waitAndPushBunsButton(){
@@ -45,15 +51,15 @@ public class HomePage extends GeneralMethods{
         }
 
         //Метод проверки, что кнопка currentBuns существует
-        public void currentBunsExist() {
-            currentBuns.should(exist);
+        public void currentBunsExistAndVisible() {
+            waitAndVisibleButton(currentBuns);
         }
 
 
     //Кнопка Соусы
-    public SelenideElement saucesButton = $x("//div[contains(@class,'tab_tab__1SPyG  pt-4 pr-10 pb-4 pl-10 noselect')]/span[text()='Соусы']");
+    private SelenideElement saucesButton = $x("//div[contains(@class,'tab_tab__1SPyG  pt-4 pr-10 pb-4 pl-10 noselect')]/span[text()='Соусы']");
         //Изменения класса в div после нажатия на кнопку Соусы
-        public SelenideElement currentSauces = $x("//div[contains(@class,'_current_')]/span[text()='Соусы']");
+        private SelenideElement currentSauces = $x("//div[contains(@class,'_current_')]/span[text()='Соусы']");
 
         //Метод ожидания видимости кнопки Соусы и нажатия на неё
         public void waitAndPushSaucesButton(){
@@ -61,20 +67,21 @@ public class HomePage extends GeneralMethods{
             pushButton(saucesButton);
         }
 
+
         //Метод проверки, что кнопка Соусы НЕ существует
         public void saucesButtonDoesNotExist() {
             saucesButton.shouldNot(exist);
         }
 
         //Метод проверки, что кнопка currentSauces существует
-        public void currentSaucesExist() {
-            currentSauces.should(exist);
+        public void currentSaucesExistAndVisible() {
+            waitAndVisibleButton(currentSauces);
         }
 
     //Кнопка Начинки
-    public SelenideElement fillingsButton = $x("//div[contains(@class,'tab_tab__1SPyG  pt-4 pr-10 pb-4 pl-10 noselect')]/span[text()='Начинки']");
+    private SelenideElement fillingsButton = $x("//div[contains(@class,'tab_tab__1SPyG  pt-4 pr-10 pb-4 pl-10 noselect')]/span[text()='Начинки']");
         //Изменения класса в div после нажатия на кнопку Начинки
-        public SelenideElement currentFillings = $x("//div[contains(@class,'_current_')]/span[text()='Начинки']");
+        private SelenideElement currentFillings = $x("//div[contains(@class,'_current_')]/span[text()='Начинки']");
 
         //Метод ожидания видимости кнопки Начинки и нажатия на неё
         public void waitAndPushFillingsButton(){
@@ -88,7 +95,14 @@ public class HomePage extends GeneralMethods{
         }
 
         //Метод проверки, что кнопка currentFillings существует
-        public void currentFillingsExist() {
-            currentFillings.should(exist);
+        public void currentFillingsExistAndVisible() {
+            waitAndVisibleButton(currentFillings);
         }
+
+    @Step("Возвращает Email из Личного Кабинета")
+    public String checkAccountProfile() {
+        HomePage homePage = page(HomePage.class);
+        AccountProfilePage accountProfilePage = homePage.waitAndPushAccountButton();
+        return accountProfilePage.checkLoginFieldValue();
+    }
 }

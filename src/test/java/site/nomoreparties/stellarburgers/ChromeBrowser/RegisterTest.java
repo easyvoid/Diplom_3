@@ -2,6 +2,7 @@ package site.nomoreparties.stellarburgers.ChromeBrowser;
 
 import api.User;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import site.nomoreparties.stellarburgers.*;
 
@@ -9,11 +10,16 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
 
 
-public class RegisterTest extends BaseTest {
+public class RegisterTest extends ChromeBaseTest {
+
+    @Before
+    public void setUp() {
+        open(homePageURL, HomePage.class);
+    }
 
     @Test
     public void registerPositiveTest() {
-        HomePage homePage = open(homePageURL, HomePage.class);
+        HomePage homePage = page(HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
 
         RegisterPage registerPage = loginPage.waitAndPushRegisterLink();
@@ -28,7 +34,7 @@ public class RegisterTest extends BaseTest {
 //        User userWithShortPassword = new User(user.getEmail(), gen.randomShortPassword(), user.getName());
 //        не знаю какая реализация лучше, которая строкой выше или строкой ниже?
         User userWithShortPassword = new User().setPassword(gen.randomShortPassword()).setEmail(user.getEmail()).setName(user.getName());
-        HomePage homePage = open(homePageURL, HomePage.class);
+        HomePage homePage = page(HomePage.class);
         LoginPage loginPage = homePage.waitAndPushLoginButton();
 
         RegisterPage registerPage = loginPage.waitAndPushRegisterLink();
